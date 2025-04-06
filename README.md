@@ -6,7 +6,7 @@ Built with HTML, CSS, Go (for backend), and a bit of JavaScript magic ✨
 ![URL Shortener Application](./assets/url_shortener_logo.png)
 
 
-## Features
+## 🚀 Features
 
 - ✅ Enter any long URL and get a short version
 - ✅ Copy the shortened URL to your clipboard with one click
@@ -15,7 +15,7 @@ Built with HTML, CSS, Go (for backend), and a bit of JavaScript magic ✨
 - ✅ Error handling for invalid inputs or API errors
 
 
-## Getting Started
+## 🏁 Getting Started
 
 ### Prerequisites
 
@@ -25,7 +25,7 @@ Before running this application, ensure you have the following installed:
 - **Docker** (optional, if using Docker for deployment)
 - **Docker Compose** (optional, for database setup)
 
-### Usage
+### 💡 Usage
 
 1. Clone the repository
 
