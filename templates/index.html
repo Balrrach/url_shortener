@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .title }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .container {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="url"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #fff;
+            display: none;
+        }
+        .short-url {
+            font-weight: bold;
+            color: #2196F3;
+        }
+        .long-word {
+            word-break: break-all;
+            white-space: normal;
+        }
+    </style>
+</head>
+<body>
+    <h1>URL Shortener</h1>
+    
+    <div class="container">
+        <div class="form-group">
+            <label for="url">Enter a long URL to shorten:</label>
+            <input type="url" id="url" placeholder="https://example.com/very/long/url" required>
+        </div>
+        
+        <button onclick="shortenURL()">Shorten URL</button>
+        
+        <div class="result" id="result">
+            <p>Your shortened URL:</p>
+            <p class="short-url"><a id="shortUrl" href="#" target="_blank"></a></p>
+
+            <p>Original URL:</p>
+            <p class="long-word"><a id="longUrl"></a></p>
+
+            <p><button onclick="copyToClipboard()">Copy Short URL</button></p>
+        </div>
+    </div>
+    
+    <script>
+        function shortenURL() {
+            const url = document.getElementById('url').value;
+            
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+            
+            fetch('/api/shorten', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url: url }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('shortUrl').textContent = data.short_url;
+                document.getElementById('shortUrl').href = data.short_url;
+                document.getElementById('longUrl').textContent = data.long_url;
+                document.getElementById('result').style.display = 'block';
+            })
+            .catch(error => {
+                alert('Error: ' + error.message);
+            });
+        }
+        
+        function copyToClipboard() {
+            const shortUrl = document.getElementById('shortUrl').textContent;
+            navigator.clipboard.writeText(shortUrl).then(() => {
+                alert('URL copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
